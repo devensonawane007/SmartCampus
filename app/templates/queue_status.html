@@ -1,0 +1,141 @@
+// {% extends "base.html" %}
+
+{% block title %}Queue System - SmartCampus{% endblock %}
+
+{% block content %}
+<div class="container my-5 py-5" style="background-color: #121212; color: #e0e0e0;">  <!-- Dark background for the whole container -->
+
+  <h2 class="mb-4 text-center" style="color: #ffffff; letter-spacing: -0.5px;">Queue System</h2>
+
+  <div class="row justify-content-center g-4">
+    <!-- Update Queue Section -->
+    <div class="col-md-6 d-flex justify-content-center">
+      <div class="card shadow-lg mb-4" style="background-color: #1e1e1e; border-radius: 15px; width: 100%; max-width: 500px;">
+        <div class="card-header bg-primary-custom text-white d-flex justify-content-center align-items-center" style="background: linear-gradient(135deg, #2c2c54, #4e54c8); border-radius: 15px 15px 0 0;">
+          <span>Update Queue Status</span>
+        </div>
+        <div class="card-body" style="background-color: #1a1a1a; padding: 20px; color: #e0e0e0;">
+          <h3 class="card-title" style="color: #ffffff;">Update Queue Status</h3>
+          <p class="mb-3" style="color: #e0e0e0; font-size: 1rem; line-height: 1.6;">Admins or students can update the current wait times below.</p>  <!-- Improved visibility -->
+
+          <form method="POST" action="{{ url_for('queue_status') }}">
+            {{ form.hidden_tag() }}
+            <div class="mb-3">
+              <label for="location" class="form-label" style="color: #ffffff; font-size: 1rem;">Location</label>
+              <select name="location" class="form-select form-control-custom" required>
+                <option value="">Select Location</option>
+                <option value="Library">Library</option>
+                <option value="Canteen">Canteen</option>
+                <option value="Stationery Shop">Stationery Shop</option>
+                <option value="Admin Office">Admin Office</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label for="wait_time" class="form-label" style="color: #ffffff; font-size: 1rem;">Estimated Wait Time (in minutes)</label>
+              <input type="number" class="form-control form-control-custom" name="wait_time" placeholder="e.g., 10" required min="0">
+            </div>
+            <button type="submit" class="btn btn-primary-custom w-100">Update Queue</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Current Queue Display -->
+    <div class="col-md-6 d-flex justify-content-center">
+      <div class="card shadow-lg" style="background-color: #1e1e1e; border-radius: 15px; width: 100%; max-width: 500px;">
+        <div class="card-header bg-info-custom text-white" style="background: linear-gradient(135deg, #2c2c54, #4e54c8); border-radius: 15px 15px 0 0;">
+          <h3 class="card-title text-center" style="color: #ffffff;">Current Queue Status</h3>
+        </div>
+        <div class="card-body" style="background-color: #1a1a1a; padding: 20px; color: #e0e0e0;">
+          <p class="mb-3" style="color: #e0e0e0; font-size: 1rem; line-height: 1.6;">View real-time queue information below.</p>  <!-- Improved visibility -->
+
+          {% if queue_data %}
+            <ul class="list-group">
+              {% for key, value in queue_data.items() %}
+                <li class="list-group-item d-flex justify-content-between align-items-center" style="background-color: #2c2c54; color: #e0e0e0; border-radius: 8px; margin-bottom: 10px;">
+                  <div>
+                    <strong style="color: #ffffff;">{{ value.location }}</strong><br>
+                    <small style="color: #a0a0a0;">Updated: {{ value.timestamp.split("T")[1][:5] }}</small>
+                  </div>
+                  <span class="badge bg-primary-custom" style="background: linear-gradient(135deg, #4e54c8, #8f94fb); color: #ffffff;">{{ value.wait_time }} min</span>
+                </li>
+              {% endfor %}
+            </ul>
+          {% else %}
+            <div class="alert alert-custom mt-3 text-center" style="background: linear-gradient(135deg, #2c2c54, #4e54c8); color: #e0e0e0; border-radius: 8px;">
+              No queue data available yet. Be the first to update!
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Optional CSS for Theme Consistency -->
+<style>
+  /* Custom form controls for dark mode */
+  .form-control-custom {
+    background-color: #2c2c54;
+    color: #e0e0e0;
+    border: 1px solid #4e54c8;
+    border-radius: 8px;
+    transition: border-color 0.3s ease;
+  }
+  .form-control-custom:focus {
+    border-color: #8f94fb;
+    box-shadow: 0 0 10px rgba(143, 148, 251, 0.2);
+  }
+  .form-control-custom::placeholder {
+    color: #a0a0a0;  /* Subtle placeholder color for visibility */
+  }
+
+  .btn-primary-custom {
+    background: linear-gradient(135deg, #4e54c8, #8f94fb);
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+  }
+  .btn-primary-custom:hover {
+    background: linear-gradient(135deg, #8f94fb, #4e54c8);
+    transform: scale(1.05);
+  }
+
+  .bg-info-custom {
+    background: linear-gradient(135deg, #2c2c54, #4e54c8);
+  }
+
+  .alert-custom {
+    background: linear-gradient(135deg, #2c2c54, #4e54c8);
+    color: #e0e0e0;
+    border-radius: 8px;
+    padding: 15px;
+  }
+
+  /* General adjustments for alignment and responsiveness */
+  .row.justify-content-center {
+    justify-content: center;
+  }
+
+  @media (max-width: 768px) {
+    .card {
+      margin: 1rem auto;
+    }
+    .row.g-4 {
+      flex-direction: column;
+      align-items: center;
+    }
+    form .row {
+      flex-direction: column;
+    }
+    .list-group-item {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    p.mb-3 {
+      font-size: 0.9rem;  /* Slight adjustment for mobile readability */
+    }
+  }
+</style>
+{% endblock %}

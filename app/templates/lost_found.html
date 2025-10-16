@@ -1,0 +1,135 @@
+// {% extends "base.html" %}
+
+{% block title %}Lost & Found{% endblock %}
+
+{% block content %}
+<div class="container my-5 py-5" style="background-color: #121212; color: #e0e0e0;">  <!-- Dark background for the whole container -->
+
+    <h2 class="mb-4 text-center" style="color: #ffffff; letter-spacing: -0.5px;"><i class="bi bi-search me-2"></i>Lost & Found</h2>
+
+    <div class="card mb-5 shadow-lg" style="background-color: #1e1e1e; border-radius: 15px;">
+        <div class="card-header bg-primary-custom text-white d-flex justify-content-center align-items-center" style="background: linear-gradient(135deg, #2c2c54, #4e54c8); border-radius: 15px 15px 0 0;">
+            <span>Report a Lost Item</span>
+        </div>
+        <div class="card-body" style="background-color: #1a1a1a; padding: 20px; color: #e0e0e0;">  <!-- Explicit color for body -->
+            <form method="POST" class="row g-3">
+                {{ form.hidden_tag() }}
+                <div class="col-md-12 mb-3">
+                    <label for="{{ form.item_name.id }}" class="form-label" style="color: #ffffff; font-size: 1rem;">Item Name</label>
+                    {{ form.item_name(class="form-control form-control-custom", placeholder="Enter item name") }}
+                </div>
+                <div class="col-md-12 mb-3">
+                    <label for="{{ form.description.id }}" class="form-label" style="color: #ffffff; font-size: 1rem;">Description</label>
+                    {{ form.description(class="form-control form-control-custom", rows="3", placeholder="Enter description") }}
+                </div>
+                <div class="col-md-12 mb-3">
+                    <label for="{{ form.location.id }}" class="form-label" style="color: #ffffff; font-size: 1rem;">Location</label>
+                    {{ form.location(class="form-control form-control-custom", placeholder="Enter location") }}
+                </div>
+                <div class="col-md-12 mb-3">
+                    <label for="{{ form.status.id }}" class="form-label" style="color: #ffffff; font-size: 1rem;">Status</label>
+                    {{ form.status(class="form-select form-control-custom") }}
+                </div>
+                <div class="col-md-12 mb-3">
+                    <label for="{{ form.contact_info.id }}" class="form-label" style="color: #ffffff; font-size: 1rem;">Contact Info</label>
+                    {{ form.contact_info(class="form-control form-control-custom", placeholder="Enter contact information") }}
+                </div>
+                <button type="submit" class="btn btn-primary-custom">{{ form.submit.label.text }}</button>
+            </form>
+        </div>
+    </div>
+
+    <hr class="my-4" style="border-color: #4e54c8;">
+
+    {% if lost_items %}
+        <h4 class="mb-4 text-center" style="color: #ffffff;">Reported Items</h4>
+        <div class="row g-4 justify-content-center align-items-stretch">
+            {% for item_id, item in lost_items.items() %}
+                <div class="col-md-6 col-sm-12 d-flex justify-content-center">
+                    <div class="card shadow-lg h-100" style="background-color: #1e1e1e; color: #e0e0e0; border-radius: 15px; width: 100%; max-width: 500px; transition: all 0.3s ease;">
+                        <div class="card-body p-4">
+                            <h5 class="card-title" style="color: #ffffff; font-size: 1.1rem;">{{ item['name'] }}</h5>
+                            <p class="card-text" style="color: #c0c0c0; font-size: 0.95rem; line-height: 1.8;">Description: {{ item['description'] }}</p>
+                            <p class="card-text" style="color: #e0e0e0;"><small><i class="fas fa-map-marker-alt me-1" style="color: #8f94fb;"></i>Location: {{ item['location'] }}</small></p>
+                            <p class="card-text" style="color: #a0a0a0;"><small>Reported by: {{ item['reporter'] }}</small></p>
+                            <form action="{{ url_for('delete_item', item_id=item_id) }}" method="POST" onsubmit="return confirm('Mark this item as found?')" style="margin-top: 10px;">
+                                <button type="submit" class="btn btn-success-custom">Found</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="text-center" style="color: #a0a0a0; font-size: 1rem;">No lost items reported yet.</p>
+    {% endif %}
+</div>
+
+<!-- Optional CSS for Theme Consistency -->
+<style>
+  /* Custom form controls for dark mode */
+  .form-control-custom {
+    background-color: #2c2c54;
+    color: #e0e0e0;
+    border: 1px solid #4e54c8;
+    border-radius: 8px;
+    transition: border-color 0.3s ease;
+  }
+  .form-control-custom:focus {
+    border-color: #8f94fb;
+    box-shadow: 0 0 10px rgba(143, 148, 251, 0.2);
+  }
+  .form-control-custom::placeholder {
+    color: #a0a0a0;  /* Subtle placeholder color for visibility */
+  }
+
+  .btn-primary-custom {
+    background: linear-gradient(135deg, #4e54c8, #8f94fb);
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+  }
+  .btn-primary-custom:hover {
+    background: linear-gradient(135deg, #8f94fb, #4e54c8);
+    transform: scale(1.05);
+  }
+
+  .btn-success-custom {
+    background: linear-gradient(135deg, #28a745, #34d399);
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+  }
+  .btn-success-custom:hover {
+    background: linear-gradient(135deg, #34d399, #28a745);
+    transform: scale(1.05);
+  }
+
+  .bg-info-custom {
+    background: linear-gradient(135deg, #2c2c54, #4e54c8);
+  }
+
+  /* General adjustments for alignment and responsiveness */
+  .row.justify-content-center {
+    justify-content: center;
+  }
+
+  @media (max-width: 768px) {
+    .card {
+      margin: 1rem auto;
+    }
+    .row.g-4 {
+      flex-direction: column;
+      align-items: center;
+    }
+    form .row {
+      flex-direction: column;
+    }
+    .card-body h5 {
+      font-size: 1rem;
+    }
+  }
+</style>
+{% endblock %}

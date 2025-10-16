@@ -1,0 +1,158 @@
+// {% extends "base.html" %}
+{% block title %}Home - SmartCampus{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<div class="row justify-content-center">
+    <div class="col-12 col-lg-10">
+        <div class="hero-section p-5 rounded-4 mb-5 text-center position-relative" style="background: linear-gradient(135deg, #2c2c54, #4e54c8); box-shadow: 0 10px 30px rgba(0,0,0,0.4);">
+            <h1 class="display-3 fw-bold mb-4" style="color: #ffffff; letter-spacing: -0.5px;"><i class="fas fa-graduation-cap me-3"></i>Welcome to SmartCampus</h1>
+            <p class="lead mb-5" style="color: #c0c0c0; font-size: 1.1rem; line-height: 1.8;">Your one-stop platform to manage lost & found items, events, and community updates on campus.</p>
+            <div class="d-flex justify-content-center gap-3">
+                <a href="{{ url_for('lostfound') }}" class="btn btn-primary-custom btn-lg me-2 shadow-sm" style="background: linear-gradient(135deg, #4e54c8, #8f94fb); border: none;"><i class="fas fa-plus me-1"></i>Report Item</a>
+                <a href="{{ url_for('lostfound') }}" class="btn btn-outline-custom btn-lg shadow-sm" style="border-color: #8f94fb; color: #8f94fb;"><i class="fas fa-search me-1"></i>Browse Items</a>
+            </div>
+           
+            
+        </div>
+    </div>
+</div>
+
+<!-- Feature Cards -->
+<div class="row g-4 mb-5 justify-content-center">
+    <div class="col-md-4 col-sm-8">
+        <div class="card h-100 shadow-lg border-0 hover-scale" style="background-color: #1e1e1e; color: #e0e0e0; border-radius: 15px; transition: all 0.3s ease;">
+            <div class="card-body text-center p-4">
+                <i class="fas fa-exclamation-triangle fa-3x text-warning mb-3" style="color: #ffcc00;"></i> <!-- Custom icon color -->
+                <h5 class="card-title fw-bold mb-3" style="color: #ffffff;">Lost Something?</h5>
+                <p class="card-text" style="font-size: 0.95rem; line-height: 1.6;">Report your missing items quickly and help others find them.</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 col-sm-8">
+        <div class="card h-100 shadow-lg border-0 hover-scale" style="background-color: #1e1e1e; color: #e0e0e0; border-radius: 15px; transition: all 0.3s ease;">
+            <div class="card-body text-center p-4">
+                <i class="fas fa-check-circle fa-3x text-success mb-3" style="color: #28a745;"></i>
+                <h5 class="card-title fw-bold mb-3" style="color: #ffffff;">Found an Item?</h5>
+                <p class="card-text" style="font-size: 0.95rem; line-height: 1.6;">Submit found items so their owners can claim them easily.</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 col-sm-8">
+        <div class="card h-100 shadow-lg border-0 hover-scale" style="background-color: #1e1e1e; color: #e0e0e0; border-radius: 15px; transition: all 0.3s ease;">
+            <div class="card-body text-center p-4">
+                <i class="fas fa-users fa-3x text-info mb-3" style="color: #17a2b8;"></i>
+                <h5 class="card-title fw-bold mb-3" style="color: #ffffff;">Community Driven</h5>
+                <p class="card-text" style="font-size: 0.95rem; line-height: 1.6;">Be part of the campus community and help keep things safe and organized.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Quick Info Banner -->
+<div class="alert alert-custom text-center rounded-4 shadow-lg mb-5" style="background-color: #2c2c54; color: #e0e0e0; border: none; padding: 20px; font-size: 1rem; line-height: 1.5;">
+    <i class="fas fa-info-circle me-2" style="color: #8f94fb;"></i>Navigate using the top menu to explore Lost & Found, Events, Mental Health support, and Queue status.
+</div>
+
+<!-- Optional CSS for Figma-level Polish -->
+<style>
+    /* Global Typography and Layout */
+    body {
+        background-color: #121212;
+        font-family: "Poppins", sans-serif;
+        color: #e0e0e0;
+        font-size: 1rem;
+        line-height: 1.6;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+    }
+
+    h1, h2, h3, h4, h5 {
+        color: #ffffff;
+        font-weight: 700;
+        letter-spacing: -0.5px;
+    }
+
+    .navbar {
+        box-shadow: 0 4px 20px rgba(0,0,0,0.6);
+        background-color: #1a1a1a;
+    }
+
+    .navbar-brand {
+        font-size: 1.5rem;
+        color: #8f94fb;
+    }
+
+    .nav-link {
+        color: #c0c0c0 !important;
+        font-weight: 500;
+        padding: 10px 15px;
+    }
+
+    .nav-link:hover, .nav-link.active {
+        color: #8f94fb !important;
+        background-color: #2c2c54;
+        border-radius: 8px;
+    }
+
+    footer {
+        background-color: #1a1a1a;
+        color: #c0c0c0;
+        padding: 15px;
+        box-shadow: 0 -4px 15px rgba(0,0,0,0.6);
+    }
+
+    .alert-custom {
+        background: linear-gradient(135deg, #2c2c54, #4e54c8);
+        border-radius: 15px;
+        font-weight: 500;
+    }
+
+    .btn-primary-custom {
+        background: linear-gradient(135deg, #4e54c8, #8f94fb);
+        color: #ffffff;
+        border: none;
+        transition: all 0.3s ease;
+    }
+
+    .btn-primary-custom:hover {
+        background: linear-gradient(135deg, #8f94fb, #4e54c8);
+        transform: scale(1.05);
+    }
+
+    .btn-outline-custom {
+        color: #8f94fb;
+        border-color: #8f94fb;
+        transition: all 0.3s ease;
+    }
+
+    .btn-outline-custom:hover {
+        background-color: #8f94fb;
+        color: #121212;
+        transform: scale(1.05);
+    }
+
+    .hover-scale {
+        transition: transform 0.4s ease, box-shadow 0.4s ease;
+    }
+
+    .hover-scale:hover {
+        transform: translateY(-10px) scale(1.05);
+        box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+    }
+
+    /* Responsive Adjustments */
+    @media (max-width: 768px) {
+        .hero-section {
+            padding: 3rem 1rem;
+        }
+        .hero-section h1 {
+            font-size: 2rem;
+        }
+        .card {
+            margin: 1rem;
+        }
+    }
+</style>
+{% endblock %}

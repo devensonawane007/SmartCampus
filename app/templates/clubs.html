@@ -1,0 +1,131 @@
+// {% extends "base.html" %}
+
+{% block title %}Clubs & Events{% endblock %}
+
+{% block content %}
+<div class="container my-5 py-5" style="background-color: #121212; color: #e0e0e0;">  <!-- Dark background for the whole container -->
+
+  <h2 class="mb-4 text-center" style="color: #ffffff; letter-spacing: -0.5px;">Clubs & Events</h2>
+
+  <!-- Add Event Form -->
+  <div class="card mb-5 shadow-lg" style="background-color: #1e1e1e; border-radius: 15px;">
+    <div class="card-header bg-primary-custom text-white d-flex justify-content-between align-items-center" style="background: linear-gradient(135deg, #2c2c54, #4e54c8); border-radius: 15px 15px 0 0;">
+      <span>Add New Event</span>
+      <button class="btn btn-light-custom btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#addEventForm" aria-expanded="false" style="background-color: #2c2c54; color: #e0e0e0; border: 1px solid #8f94fb;">
+        Show/Hide
+      </button>
+    </div>
+    <div class="collapse" id="addEventForm">
+      <div class="card-body" style="background-color: #1a1a1a; color: #e0e0e0;">
+        <form method="POST" class="row g-3">
+          {{ form.hidden_tag() }}
+          <div class="col-md-6">{{ form.club.label(class="form-label") }}{{ form.club(class="form-select form-control-custom") }}</div>
+          <div class="col-md-6">{{ form.date.label(class="form-label") }}{{ form.date(class="form-control form-control-custom") }}</div>
+          <div class="mb-3">{{ form.title.label(class="form-label") }}{{ form.title(class="form-control form-control-custom") }}</div>
+          <div class="mb-3">{{ form.description.label(class="form-label") }}{{ form.description(class="form-control form-control-custom", rows="3") }}</div>
+          <div class="mb-3">{{ form.location.label(class="form-label") }}{{ form.location(class="form-control form-control-custom") }}</div>
+          <button type="submit" class="btn btn-primary-custom">{{ form.submit.label.text }}</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Clubs and Events -->
+  <div class="row g-4 justify-content-center align-items-stretch">
+    {% for club_name, events in clubs.items() %}
+      <div class="col-md-6 col-sm-12 d-flex justify-content-center">
+        <div class="card shadow-lg h-100" style="background-color: #1e1e1e; color: #e0e0e0; border-radius: 15px; width: 100%; max-width: 500px; transition: all 0.3s ease;">
+          <div class="card-header bg-info-custom text-white" style="background: linear-gradient(135deg, #2c2c54, #4e54c8); border-radius: 15px 15px 0 0;">
+            <h5 class="mb-0 text-center">{{ club_name }}</h5>
+          </div>
+          <div class="card-body p-4">
+            {% if events %}
+              {% for event_id, event in events.items() %}
+                <div class="card mb-3 border-0" style="background-color: #1a1a1a; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.3); padding: 15px;">
+                  <div class="card-body">
+                    <h6 class="card-title" style="color: #ffffff; font-size: 1.1rem;">{{ event.title }}</h6>  <!-- Brighter and larger title -->
+                    <p class="card-text" style="color: #c0c0c0; font-size: 0.95rem; line-height: 1.8;">{{ event.description }}</p>  <!-- Improved line height for readability -->
+                    <p class="mb-0 d-flex align-items-center" style="color: #e0e0e0;"><i class="fas fa-map-marker-alt me-2" style="color: #8f94fb; font-size: 1rem;"></i>{{ event.location }}</p>
+                    <span class="badge bg-primary-custom mt-2" style="background: linear-gradient(135deg, #4e54c8, #8f94fb); color: #ffffff; padding: 0.5rem 1rem; font-size: 0.9rem;">{{ event.date }}</span>  <!-- Brighter badge for visibility -->
+                  </div>
+                </div>
+              {% endfor %}
+            {% else %}
+              <p class="text-muted text-center" style="color: #a0a0a0; font-size: 1rem;">No upcoming events.</p>  <!-- Adjusted color for better contrast -->
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+
+</div>
+
+<!-- Optional CSS for Theme Consistency -->
+<style>
+  /* Custom form controls for dark mode */
+  .form-control-custom {
+    background-color: #2c2c54;
+    color: #e0e0e0;
+    border: 1px solid #4e54c8;
+    border-radius: 8px;
+    transition: border-color 0.3s ease;
+  }
+  .form-control-custom:focus {
+    border-color: #8f94fb;
+    box-shadow: 0 0 10px rgba(143, 148, 251, 0.2);
+  }
+
+  .btn-light-custom {
+    background-color: #2c2c54;
+    color: #e0e0e0;
+    border: 1px solid #8f94fb;
+    transition: all 0.3s ease;
+  }
+  .btn-light-custom:hover {
+    background-color: #4e54c8;
+    color: #ffffff;
+  }
+
+  .btn-primary-custom {
+    background: linear-gradient(135deg, #4e54c8, #8f94fb);
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+  }
+  .btn-primary-custom:hover {
+    background: linear-gradient(135deg, #8f94fb, #4e54c8);
+    transform: scale(1.05);
+  }
+
+  .bg-info-custom {
+    background: linear-gradient(135deg, #2c2c54, #4e54c8);
+  }
+
+  .bg-primary-custom {
+    background: linear-gradient(135deg, #4e54c8, #8f94fb);
+  }
+
+  /* General adjustments for alignment and responsiveness */
+  .row.justify-content-center {
+    justify-content: center;
+  }
+
+  @media (max-width: 768px) {
+    .card {
+      margin: 1rem auto;
+    }
+    .row.g-4 {
+      flex-direction: column;
+      align-items: center;
+    }
+    form .row {
+      flex-direction: column;
+    }
+    .card-body p {
+      font-size: 0.9rem;  /* Slightly smaller on mobile for fit */
+    }
+  }
+</style>
+{% endblock %}

@@ -1,0 +1,150 @@
+// {% extends "base.html" %}
+
+{% block title %}Mental Health{% endblock %}
+
+{% block content %}
+<div class="container my-5 py-5" style="background-color: #121212; color: #e0e0e0;">  <!-- Dark background for the whole container -->
+
+  <h2 class="mb-4 text-center" style="color: #ffffff; letter-spacing: -0.5px;"><i class="bi bi-heart-pulse me-2"></i>Mental Health Check</h2>
+
+  <div class="row justify-content-center g-4">
+    <!-- Mental Health Form -->
+    <div class="col-md-6 d-flex justify-content-center">
+      <div class="card shadow-lg" style="background-color: #1e1e1e; border-radius: 15px; width: 100%; max-width: 500px;">
+        <div class="card-header bg-primary-custom text-white d-flex justify-content-center align-items-center" style="background: linear-gradient(135deg, #2c2c54, #4e54c8); border-radius: 15px 15px 0 0;">
+          <span>Mental Health Check</span>
+        </div>
+        <div class="card-body" style="background-color: #1a1a1a; padding: 20px; color: #e0e0e0;">
+          <form method="POST">
+            {{ form.hidden_tag() }}
+            <div class="mb-3">
+              <label for="{{ form.name.id }}" class="form-label" style="color: #ffffff; font-size: 1rem;">Name</label>
+              {{ form.name(class="form-control form-control-custom", placeholder="Enter your name") }}
+            </div>
+            <div class="mb-3">
+              <label for="{{ form.email.id }}" class="form-label" style="color: #ffffff; font-size: 1rem;">Email</label>
+              {{ form.email(class="form-control form-control-custom", placeholder="Enter your email") }}
+            </div>
+            <div class="mb-3">
+              <label for="{{ form.mood.id }}" class="form-label" style="color: #ffffff; font-size: 1rem;">Mood</label>
+              {{ form.mood(class="form-select form-control-custom") }}
+            </div>
+            <div class="mb-3">
+              <label for="{{ form.stress_level.id }}" class="form-label" style="color: #ffffff; font-size: 1rem;">Stress Level</label>
+              {{ form.stress_level(class="form-select form-control-custom") }}
+            </div>
+            <div class="mb-3">
+              <label for="{{ form.message.id }}" class="form-label" style="color: #ffffff; font-size: 1rem;">Message</label>
+              {{ form.message(class="form-control form-control-custom", rows="3", placeholder="Enter your message") }}
+            </div>
+            <button type="submit" class="btn btn-primary-custom w-100">{{ form.submit.label.text }}</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tips and Chatbot -->
+    <div class="col-md-6 d-flex justify-content-center flex-column">
+      <!-- Tips -->
+      <div class="card shadow-lg mb-4" style="background-color: #1e1e1e; border-radius: 15px; width: 100%; max-width: 500px;">
+        <div class="card-header bg-info-custom text-white" style="background: linear-gradient(135deg, #2c2c54, #4e54c8); border-radius: 15px 15px 0 0;">
+          <h3 class="card-title text-center" style="color: #ffffff;">Tips for Mental Wellbeing</h3>
+        </div>
+        <div class="card-body" style="background-color: #1a1a1a; padding: 20px; color: #e0e0e0;">
+          <ul class="list-group">
+            {% for tip in tips %}
+              <li class="list-group-item bg-dark text-light border-secondary" style="background-color: #2c2c54; color: #e0e0e0; border-radius: 8px; margin-bottom: 10px;">
+                <strong style="color: #ffffff;">{{ tip.title }}:</strong> {{ tip.content }}
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+
+      <!-- Chatbot -->
+      <div class="card shadow-lg" style="background-color: #1e1e1e; border-radius: 15px; width: 100%; max-width: 500px;">
+        <div class="card-header bg-info-custom text-white" style="background: linear-gradient(135deg, #2c2c54, #4e54c8); border-radius: 15px 15px 0 0;">
+          <h3 class="card-title text-center" style="color: #ffffff;">AI Chatbot</h3>
+        </div>
+        <div class="card-body" style="background-color: #1a1a1a; padding: 20px; color: #e0e0e0;">
+          <div id="chatbox" style="border:1px solid #6c757d; padding:10px; height:250px; overflow-y:auto; background-color:#212529; color: #e0e0e0;"></div>
+          <div class="input-group mt-2">
+            <input type="text" id="user-message" class="form-control form-control-custom" placeholder="Type your message...">
+            <button id="send-btn" class="btn btn-primary-custom">Send</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Include chatbot.js -->
+<script src="{{ url_for('static', filename='js/chatbot.js') }}"></script>
+
+<!-- Optional CSS for Theme Consistency -->
+<style>
+  /* Custom form controls for dark mode */
+  .form-control-custom {
+    background-color: #2c2c54;
+    color: #e0e0e0;
+    border: 1px solid #4e54c8;
+    border-radius: 8px;
+    transition: border-color 0.3s ease;
+  }
+  .form-control-custom:focus {
+    border-color: #8f94fb;
+    box-shadow: 0 0 10px rgba(143, 148, 251, 0.2);
+  }
+  .form-control-custom::placeholder {
+    color: #a0a0a0;  /* Subtle placeholder color for visibility */
+  }
+
+  .btn-primary-custom {
+    background: linear-gradient(135deg, #4e54c8, #8f94fb);
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+  }
+  .btn-primary-custom:hover {
+    background: linear-gradient(135deg, #8f94fb, #4e54c8);
+    transform: scale(1.05);
+  }
+
+  .bg-info-custom {
+    background: linear-gradient(135deg, #2c2c54, #4e54c8);
+  }
+
+  .alert-custom {
+    background: linear-gradient(135deg, #2c2c54, #4e54c8);
+    color: #e0e0e0;
+    border-radius: 8px;
+    padding: 15px;
+  }
+
+  /* General adjustments for alignment and responsiveness */
+  .row.justify-content-center {
+    justify-content: center;
+  }
+
+  @media (max-width: 768px) {
+    .card {
+      margin: 1rem auto;
+    }
+    .row.g-4 {
+      flex-direction: column;
+      align-items: center;
+    }
+    form .row {
+      flex-direction: column;
+    }
+    .list-group-item {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    p.mb-3 {
+      font-size: 0.9rem;
+    }
+  }
+</style>
+{% endblock %}
